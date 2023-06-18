@@ -13,6 +13,7 @@ class DashboardController extends Controller
 
     public function __construct(
         private JadwalKeretaQueryInterface $jadwalKeretaQuery,
+
         // private PemesananTiketQueryInterface $pemesananTiketQuery,
         // private PegawaiQueryInterface $pegawaiQuery,
     ){
@@ -24,8 +25,13 @@ class DashboardController extends Controller
 
         $jadwal_kereta = $this->jadwalKeretaQuery->execute();
 
-        if ($user->group == 'admin') {
-            return response()->json([
+        if ($user->group == 'pelanggan') {
+            // return response()->json([
+            //     'jadwal_kereta' => $jadwal_kereta
+            // ]);
+
+            return view('dashboard.pelanggan', [
+                'user' => $user,
                 'jadwal_kereta' => $jadwal_kereta
             ]);
         }

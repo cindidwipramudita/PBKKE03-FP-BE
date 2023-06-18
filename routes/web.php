@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TiketController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -26,8 +27,10 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::middleware('auth')->group(function() {
-    Route::get('/', [DashboardController::class, 'index'])->middleware('auth');
-    Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth');
+    Route::get('/', [DashboardController::class, 'index']);
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    
+    Route::get('/pesan-tiket', [TiketController::class, 'get']);
+    Route::get('/pesan-tiket/{id:int}', [TiketController::class, 'pesanTiket'],)->name('pesan-tiket');
+    Route::post('/pesan-tiket/{id:int}', [TiketController::class, 'pesanTiketAction']); 
 });

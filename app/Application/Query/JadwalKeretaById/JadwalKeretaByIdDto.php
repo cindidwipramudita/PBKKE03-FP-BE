@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\Query\JadwalKereta;
+namespace App\Application\Query\JadwalKeretaById;
 
-class JadwalKeretaDto
+class JadwalKeretaByIdDto
 {
     public function __construct(
         public int $id,

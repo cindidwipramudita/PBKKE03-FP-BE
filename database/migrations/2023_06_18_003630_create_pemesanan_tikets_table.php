@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('jadwal_kereta_id');
             $table->foreignId('pelanggan_id');
-            $table->foreignId('admin_id');
-            $table->foreignId('pegawai_id');
+            $table->foreignId('admin_id')->nullable();
+            $table->foreignId('pegawai_id')->nullable();
             $table->foreignId('status_id');
             $table->timestamps();
         });
@@ -30,9 +30,3 @@ return new class extends Migration
         Schema::dropIfExists('pemesanan_tikets');
     }
 };
-
-// App\Models\Pelanggan::create([
-//     'username' => 'dimas1234',
-//     'nama' => 'Dimas'
-//     'no_telepon' => 08123123
-// ]);

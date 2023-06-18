@@ -10,7 +10,10 @@ class JadwalKeretaQuery implements JadwalKeretaQueryInterface
 {
     public function execute(): ?array
     {
-        $sql = "SELECT * FROM jadwal_kereta";
+        $sql = "SELECT j.id AS id, k.nomor AS nomor_kereta, k.nama AS nama_kereta, j.rute AS rute, j.asal AS asal, j.tujuan AS tujuan, 
+            j.waktu_keberangkatan AS waktu_keberangkatan, j.kapasitas AS kapasitas, j.tarif AS tarif 
+            FROM jadwal_keretas j INNER JOIN keretas k ON j.kereta_id = k.id
+            WHERE j.kapasitas >= 0";
 
         $result = DB::select($sql);
 
@@ -29,7 +32,7 @@ class JadwalKeretaQuery implements JadwalKeretaQueryInterface
                 $jadwal_kereta->asal,
                 $jadwal_kereta->tujuan,
                 $jadwal_kereta->waktu_keberangkatan,
-                $jadwal_kereta->jumlah_penumpang,
+                $jadwal_kereta->kapasitas,
                 $jadwal_kereta->tarif
             ));
         }

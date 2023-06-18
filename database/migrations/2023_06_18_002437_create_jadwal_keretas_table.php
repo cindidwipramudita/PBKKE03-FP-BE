@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('tujuan');
             $table->string('waktu_keberangkatan');
             $table->integer('tarif');
+            $table->integer('kapasitas');
             $table->foreignId('kereta_id');
-            $table->foreignId('pegawai_id');
-            $table->foreignId('admin_id');
+            $table->foreignId('pegawai_id')->nullable();
+            $table->foreignId('admin_id')->nullable();
             $table->timestamps();
         });
     }
