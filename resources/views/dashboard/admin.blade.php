@@ -1,0 +1,1 @@
+<p>Hallo {{ $user }}</p>
