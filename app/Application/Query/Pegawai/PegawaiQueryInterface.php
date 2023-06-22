@@ -4,5 +4,5 @@ namespace App\Application\Query\Pegawai;
 
 interface PegawaiQueryInterface
 {
-    public function execute(): PegawaiDto;
+    public function execute($username): PegawaiDto;
 }

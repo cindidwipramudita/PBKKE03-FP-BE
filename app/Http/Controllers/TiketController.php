@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\Command\BuatPesananTiket\BuatPesananTiketCommand;
+use App\Application\Command\BuatPesananTiket\BuatPesananTiketRequest;
 use App\Application\Query\JadwalKereta\JadwalKeretaQueryInterface;
 use App\Application\Query\JadwalKeretaById\JadwalKeretaByIdQueryInterface;
+use App\Application\Query\Pelanggan\PelangganQueryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 class TiketController extends Controller
 {
     public function __construct(
         private JadwalKeretaQueryInterface $jadwalKeretaQuery,
-        private JadwalKeretaByIdQueryInterface $jadwalKeretaByIdQuery
+        private JadwalKeretaByIdQueryInterface $jadwalKeretaByIdQuery,
+        private PelangganQueryInterface $pelangganQuery
     ){
     }
 
@@ -53,13 +58,31 @@ class TiketController extends Controller
         // ]);
     }
 
-    // public function pesanTiketAction(Request $request, $jadwalKeretaId, BuatPesananTiketCommand $command) {
-    //     $user = Auth::user();
+    public function pesanTiketAction(Request $request, $jadwalKeretaId, BuatPesananTiketCommand $command) {
+        $user = Auth::user();
 
-    //     if ($user->group != 'pelanggan') {
-    //         return redirect()->intended('/kelola-tiket');
-    //     }
+        if ($user->group != 'pelanggan') {
+            return redirect()->intended('/kelola-tiket');
+        }
 
-        
-    // }
+        $pelanggan = $this->pelangganQuery->execute($user->username);
+        $statusId = 2;
+
+        $buatPesananTiketRequest = new BuatPesananTiketRequest(
+            $jadwalKeretaId,
+            $pelanggan->id,
+            null,
+            null,
+            $statusId
+        );
+
+        try {
+            $command->execute($buatPesananTiketRequest);
+        } catch (Throwable $e) {
+            return back()->withErrors($e->getMessage())->withInput();
+        }
+
+        return response()->redirectTo('/')
+            ->with('success', 'berhasil_membuat_pesanan_tiket');
+    }
 }
